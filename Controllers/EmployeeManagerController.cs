@@ -19,6 +19,9 @@ namespace EmployeeManager.Mvc.Controllers
             this.db = db;
         }
 
+        /// <summary>
+        /// Returning list of countries
+        /// </summary>
         private void FillCountries()
         {
             List<SelectListItem> countries =
@@ -33,6 +36,91 @@ namespace EmployeeManager.Mvc.Controllers
                 ).ToList();
             ViewBag.Countries = countries;
         }
+
+        /// <summary>
+        /// returning list of employees
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult List()
+        {
+            List<Employee> model =
+                (
+                    from e in db.Employees
+                    orderby e.EmployeeID
+                    select e
+                ).ToList();
+            return View(model);
+        }
+
+        /// <summary>
+        /// Inserting new employee
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Insert()
+        {
+            FillCountries();
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Insert(Employee model)
+        {
+            FillCountries();
+            if(ModelState.IsValid)
+            {
+                db.Employees.Add(model);
+                db.SaveChanges();
+                ViewBag.Message = "Employee inserted successfully";
+            }
+            return View(model);
+        }
+
+        /// <summary>
+        /// updating employee
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Update(int id)
+        {
+            FillCountries();
+            Employee model = db.Employees.Find(id);
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Update(Employee model)
+        {
+            FillCountries();
+            if(ModelState.IsValid)
+            {
+                db.Employees.Update(model);
+                db.SaveChanges();
+                ViewBag.Message = "Employee update successfully";
+            }
+            return View(model);
+        }
+
+        /// <summary>
+        /// Deleting an employee
+        /// </summary>
+        /// <returns></returns>
+        [ActionName("Delete")]
+        public IActionResult ConfirmDelete(int id)
+        {
+            Employee model = db.Employees.Find(id);
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Delete(int employeeID)
+        {
+            Employee model = db.Employees.Find(employeeID);
+            db.Employees.Remove(model);
+            db.SaveChanges();
+            TempData["Message"] = "Employee deleted successfully";
+            return RedirectToAction("List");
+        }
+
+
 
         // GET: /<controller>/
         public IActionResult Index()

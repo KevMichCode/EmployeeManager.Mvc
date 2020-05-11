@@ -13,7 +13,7 @@ namespace EmployeeManager.Mvc.Models
 
         }
 
-        public DbSet<Employee> Employess { get; set; }
+        public DbSet<Employee> Employees { get; set; }
 
         public DbSet<Country> Countries { get; set; }
 

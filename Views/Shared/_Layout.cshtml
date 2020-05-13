@@ -10,11 +10,19 @@
     <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 </head>
 <body>
-    <h1>Employee Manager</h1>
+    <h1>Employee Manager - <a asp-controller="EmployeeManager" asp-action="Help">Access the Help</a></h1>
     <hr />
     <div>
         @RenderBody()
     </div>
     <hr />
+    @if(User.Identity.IsAuthenticated)
+    {
+        <h2>You are signed in as @User.Identity.Name</h2>
+        <form asp-controller="Security" asp-action="Signout" method="post">
+            <button type="submit">Sign Out</button>
+        </form>
+    }
+
 </body>
 </html>

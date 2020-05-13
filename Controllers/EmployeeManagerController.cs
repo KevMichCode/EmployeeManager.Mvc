@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EmployeeManager.Mvc.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace EmployeeManager.Mvc.Controllers
 {
+    [Authorize(Roles = "Manager")]
     public class EmployeeManagerController : Controller
     {
         private AppDbContext db = null;
@@ -56,6 +58,7 @@ namespace EmployeeManager.Mvc.Controllers
         /// Inserting new employee
         /// </summary>
         /// <returns></returns>
+        
         public IActionResult Insert()
         {
             FillCountries();
@@ -63,6 +66,7 @@ namespace EmployeeManager.Mvc.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Insert(Employee model)
         {
             FillCountries();
@@ -79,6 +83,7 @@ namespace EmployeeManager.Mvc.Controllers
         /// updating employee
         /// </summary>
         /// <returns></returns>
+        
         public IActionResult Update(int id)
         {
             FillCountries();
@@ -87,6 +92,7 @@ namespace EmployeeManager.Mvc.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Update(Employee model)
         {
             FillCountries();
@@ -111,6 +117,7 @@ namespace EmployeeManager.Mvc.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Delete(int employeeID)
         {
             Employee model = db.Employees.Find(employeeID);
@@ -120,10 +127,8 @@ namespace EmployeeManager.Mvc.Controllers
             return RedirectToAction("List");
         }
 
-
-
-        // GET: /<controller>/
-        public IActionResult Index()
+        [AllowAnonymous]
+        public IActionResult Help()
         {
             return View();
         }

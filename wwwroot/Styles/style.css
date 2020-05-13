@@ -8,7 +8,6 @@ body {
     font-family: 'Trebuchet MS';
     font-size: 120%;
     margin:50px;
-    background-color: red;
 }
 
 hr {
@@ -42,8 +41,9 @@ a.linkbutton {
 
 
 .message {
-    color: red;
-    font-weight:bold;
+    color: gray;
+    font-weight:normal;
+    font-style: italic;
 }
 
 input {
